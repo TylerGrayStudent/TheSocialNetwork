@@ -38,7 +38,6 @@ namespace The_Social_Network.QuickStart.Data
                             new(JwtClaimTypes.WebSite, "https://tylergraydev.com"),
                             new(JwtClaimTypes.Address, JsonSerializer.Serialize(address),
                                 IdentityServerConstants.ClaimValueTypes.Json),
-                            new Claim(JwtClaimTypes.Id, "1")
                         }
                     },
                     new()

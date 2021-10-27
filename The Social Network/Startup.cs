@@ -14,6 +14,11 @@ using The_Social_Network.Extensions;
 using The_Social_Network.MiddlewareClasses;
 using The_Social_Network.QuickStart.Data;
 using Serilog;
+using The_Social_Network.Interfaces;
+using The_Social_Network.Services;
+using The_Social_Network.Utilities;
+using The_Social_Network.Utilities.Interfaces;
+using IResourceOwnerPasswordValidator = IdentityServer4.Validation.IResourceOwnerPasswordValidator;
 
 namespace The_Social_Network
 {
@@ -41,7 +46,7 @@ namespace The_Social_Network
                     opts.Events.RaiseSuccessEvents = true;
                 }).AddInMemoryApiScopes(Config.GetApiScopes()).AddInMemoryApiResources(Config.GetApis())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources()).AddInMemoryClients(Config.GetClients())
-                .AddTestUsers(TestUsers.Users).AddDeveloperSigningCredential(false);
+                .AddTestUsers(TestUsers.Users).AddDeveloperSigningCredential(false).AddProfileService<UserService>();
 
             services.AddAuthentication()
             .AddLocalApi(opts => opts.ExpectedScope = "api");
@@ -59,6 +64,11 @@ namespace The_Social_Network
 
             services.AddTransient<IRedirectUriValidator, SNRedirectValidator>();
             services.AddTransient<ICorsPolicyService, SNCorsPolicy>();
+            services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
+            services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
