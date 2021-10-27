@@ -1,0 +1,71 @@
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\appsettings.Development.json
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\appsettings.json
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\The Social Network.exe
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\The Social Network.deps.json
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\The Social Network.runtimeconfig.json
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\The Social Network.runtimeconfig.dev.json
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\The Social Network.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\ref\The Social Network.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\The Social Network.pdb
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\The Social Network.Views.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\The Social Network.Views.pdb
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\Newtonsoft.Json.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.csproj.AssemblyReference.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.AssemblyInfoInputs.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.AssemblyInfo.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.csproj.CoreCompileInputs.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.RazorAssemblyInfo.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.RazorAssemblyInfo.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\staticwebassets\The Social Network.StaticWebAssets.Manifest.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\staticwebassets\The Social Network.StaticWebAssets.xml
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\scopedcss\bundle\The Social Network.styles.css
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.TagHelpers.input.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.TagHelpers.output.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.RazorCoreGenerate.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\_ViewImports.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\_ViewStart.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.RazorTargetAssemblyInfo.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.RazorTargetAssemblyInfo.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.Views.pdb
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.csproj.CopyComplete
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\ref\The Social Network.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.pdb
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\The Social Network.genruntimeconfig.cache
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\web.config
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\IdentityModel.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\IdentityServer4.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\IdentityServer4.Storage.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\Microsoft.AspNetCore.Authentication.OpenIdConnect.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\Serilog.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\Microsoft.Azure.Services.AppAuthentication.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\bin\Debug\net5.0\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Pages\Account\AccessDenied.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Pages\Account\LoggedOut.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Pages\Account\Login.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Pages\Account\Logout.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Account\AccessDenied.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Account\LoggedOut.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Account\Login.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Account\Logout.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Consent\Index.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Device\Success.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Device\UserCodeCapture.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Device\UserCodeConfirmation.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Diagnostics\Index.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Grants\Index.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Shared\Redirect.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Shared\_Nav.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Shared\_ScopeListItem.cshtml.g.cs
+C:\Users\WTGRAY\source\repos\The Social Network\The Social Network\obj\Debug\net5.0\Razor\Views\Shared\_ValidationSummary.cshtml.g.cs
