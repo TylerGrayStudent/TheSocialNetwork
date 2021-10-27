@@ -37,7 +37,8 @@ namespace The_Social_Network.QuickStart.Data
                             new(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
                             new(JwtClaimTypes.WebSite, "https://tylergraydev.com"),
                             new(JwtClaimTypes.Address, JsonSerializer.Serialize(address),
-                                IdentityServerConstants.ClaimValueTypes.Json)
+                                IdentityServerConstants.ClaimValueTypes.Json),
+                            new Claim(JwtClaimTypes.Id, "1")
                         }
                     },
                     new()
@@ -54,7 +55,8 @@ namespace The_Social_Network.QuickStart.Data
                             new(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
                             new(JwtClaimTypes.WebSite, "https://hirequest.com"),
                             new(JwtClaimTypes.Address, JsonSerializer.Serialize(address),
-                                IdentityServerConstants.ClaimValueTypes.Json)
+                                IdentityServerConstants.ClaimValueTypes.Json),
+                            new Claim(JwtClaimTypes.Id, "2")
                         }
                     }
                 };
