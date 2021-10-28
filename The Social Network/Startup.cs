@@ -46,7 +46,8 @@ namespace The_Social_Network
                     opts.Events.RaiseSuccessEvents = true;
                 }).AddInMemoryApiScopes(Config.GetApiScopes()).AddInMemoryApiResources(Config.GetApis())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources()).AddInMemoryClients(Config.GetClients())
-                .AddTestUsers(TestUsers.Users).AddDeveloperSigningCredential(false).AddProfileService<UserService>();
+                // .AddTestUsers(TestUsers.Users)
+                .AddDeveloperSigningCredential(false);
 
             services.AddAuthentication()
             .AddLocalApi(opts => opts.ExpectedScope = "api");
@@ -61,14 +62,14 @@ namespace The_Social_Network
                     policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
             });
-
+            
             services.AddTransient<IRedirectUriValidator, SNRedirectValidator>();
             services.AddTransient<ICorsPolicyService, SNCorsPolicy>();
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
             services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
+            services.AddTransient<IProfileService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IUserService, UserService>();
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
