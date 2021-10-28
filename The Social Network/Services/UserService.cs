@@ -30,10 +30,9 @@ namespace The_Social_Network.Services
             try
             {
                 using var http = new HttpClient();
-                var url = "https://testservices.hirequest.com/api/users/login/portal";
-                var url2 = "http://localhost:5000/users/login/portal/idp";
+                var url = $"{Environment.GetEnvironmentVariable("WEB_SERVICES_LOCATION")}/users/login/portal/idp";
                 var content = new StringContent(JsonSerializer.Serialize(credential), Encoding.UTF8, "application/json");
-                using var response = await http.PostAsync(url2, content);
+                using var response = await http.PostAsync(url, content);
                 var responseContent = await response.Content.ReadAsStringAsync();
                 var user = Newtonsoft.Json.JsonConvert.DeserializeObject<FranchiseUser>(responseContent);
                 return user;
