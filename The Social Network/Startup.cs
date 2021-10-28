@@ -65,9 +65,9 @@ namespace The_Social_Network
             
             services.AddTransient<IRedirectUriValidator, SNRedirectValidator>();
             services.AddTransient<ICorsPolicyService, SNCorsPolicy>();
-            services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
+            // services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
             services.AddSingleton<IDbConnectionFactory, SqlConnectionFactory>();
-            services.AddTransient<IProfileService, UserService>();
+            // services.AddTransient<IProfileService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
 
         }
