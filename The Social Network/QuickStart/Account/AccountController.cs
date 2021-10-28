@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using The_Social_Network.Interfaces;
 using The_Social_Network.QuickStart.Data;
 
 namespace IdentityServerHost.Quickstart.UI
@@ -35,13 +37,13 @@ namespace IdentityServerHost.Quickstart.UI
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
+        private readonly IUserRepository _userRepository;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            IEventService events,
-            TestUserStore users = null)
+            IEventService events, IUserRepository userRepository, TestUserStore users = null)
         {
             // if the TestUserStore is not in DI, then we'll just use the global users collection
             // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
@@ -51,6 +53,7 @@ namespace IdentityServerHost.Quickstart.UI
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
+            _userRepository = userRepository;
         }
 
         /// <summary>
@@ -111,11 +114,15 @@ namespace IdentityServerHost.Quickstart.UI
             if (ModelState.IsValid)
             {
                 // validate username/password against in-memory store
-                if (_users.ValidateCredentials(model.Username, model.Password))
+                var frUser = await _userRepository.GetFranchiseUserByUserName(model.Username);
+                var encodedSalt = frUser.SecurePassword[..24];
+                var decodedSalt = Convert.FromBase64String(encodedSalt); 
+                var inputHash = CreatePasswordHash(model.Password, decodedSalt);
+                var savedHash = frUser.SecurePassword.Substring(24, 44);
+                if (Equals(inputHash, savedHash))
                 {
-                    var user = _users.FindByUsername(model.Username);
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(user.Username, user.SubjectId, user.Username, clientId: context?.Client.ClientId));
-
+                    await _events.RaiseAsync(new UserLoginSuccessEvent(frUser.UserName, frUser.UserID.ToString(),
+                        $"{frUser.FirstName} {frUser.LastName}", clientId: context?.Client.ClientId));
                     // only set explicit expiration here if user chooses "remember me". 
                     // otherwise we rely upon expiration configured in cookie middleware.
                     AuthenticationProperties props = null;
@@ -129,13 +136,13 @@ namespace IdentityServerHost.Quickstart.UI
                     };
 
                     // issue authentication cookie with subject ID and username
-                    var isuser = new IdentityServerUser(user.SubjectId)
+                    var isuser = new IdentityServerUser(frUser.UserID.ToString())
                     {
-                        DisplayName = user.Username
+                        DisplayName = frUser.UserName
                     };
-
+                    
                     await HttpContext.SignInAsync(isuser, props);
-
+                    
                     if (context != null)
                     {
                         if (context.IsNativeClient())
@@ -164,6 +171,7 @@ namespace IdentityServerHost.Quickstart.UI
                         throw new Exception("invalid return URL");
                     }
                 }
+                
 
                 await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId:context?.Client.ClientId));
                 ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
@@ -365,5 +373,13 @@ namespace IdentityServerHost.Quickstart.UI
 
             return vm;
         }
+        private static string CreatePasswordHash(string password, byte[] salt)
+        {
+            return Convert.ToBase64String(
+                KeyDerivation.Pbkdf2(
+                    password, salt, KeyDerivationPrf.HMACSHA512, 100000, 32));
+        }
     }
+    
+    
 }
