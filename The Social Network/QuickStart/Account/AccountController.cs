@@ -19,7 +19,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using The_Social_Network.Interfaces;
+using The_Social_Network.Models;
 using The_Social_Network.QuickStart.Data;
+using The_Social_Network.Services;
 
 namespace IdentityServerHost.Quickstart.UI
 {
@@ -32,28 +34,25 @@ namespace IdentityServerHost.Quickstart.UI
     [AllowAnonymous]
     public class AccountController : Controller
     {
-        private readonly TestUserStore _users;
         private readonly IIdentityServerInteractionService _interaction;
         private readonly IClientStore _clientStore;
         private readonly IAuthenticationSchemeProvider _schemeProvider;
         private readonly IEventService _events;
         private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
         public AccountController(
             IIdentityServerInteractionService interaction,
             IClientStore clientStore,
             IAuthenticationSchemeProvider schemeProvider,
-            IEventService events, IUserRepository userRepository, TestUserStore users = null)
+            IEventService events, IUserRepository userRepository, IUserService userService, TestUserStore users = null)
         {
-            // if the TestUserStore is not in DI, then we'll just use the global users collection
-            // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
-            _users = users ?? new TestUserStore(TestUsers.Users);
-
             _interaction = interaction;
             _clientStore = clientStore;
             _schemeProvider = schemeProvider;
             _events = events;
             _userRepository = userRepository;
+            _userService = userService;
         }
 
         /// <summary>
@@ -68,7 +67,7 @@ namespace IdentityServerHost.Quickstart.UI
             if (vm.IsExternalLoginOnly)
             {
                 // we only have one option for logging in and it's an external provider
-                return RedirectToAction("Challenge", "External", new { scheme = vm.ExternalLoginScheme, returnUrl });
+                return RedirectToAction("Challenge", "External", new {scheme = vm.ExternalLoginScheme, returnUrl});
             }
 
             return View(vm);
@@ -114,67 +113,68 @@ namespace IdentityServerHost.Quickstart.UI
             if (ModelState.IsValid)
             {
                 // validate username/password against in-memory store
-                var frUser = await _userRepository.GetFranchiseUserByUserName(model.Username);
-                var encodedSalt = frUser.SecurePassword[..24];
-                var decodedSalt = Convert.FromBase64String(encodedSalt); 
-                var inputHash = CreatePasswordHash(model.Password, decodedSalt);
-                var savedHash = frUser.SecurePassword.Substring(24, 44);
-                if (Equals(inputHash, savedHash))
+                FranchiseUser frUser;
+                try
                 {
-                    await _events.RaiseAsync(new UserLoginSuccessEvent(frUser.UserName, frUser.UserID.ToString(),
-                        $"{frUser.FirstName} {frUser.LastName}", clientId: context?.Client.ClientId));
-                    // only set explicit expiration here if user chooses "remember me". 
-                    // otherwise we rely upon expiration configured in cookie middleware.
-                    AuthenticationProperties props = null;
-                    if (AccountOptions.AllowRememberLogin && model.RememberLogin)
-                    {
-                        props = new AuthenticationProperties
-                        {
-                            IsPersistent = true,
-                            ExpiresUtc = DateTimeOffset.UtcNow.Add(AccountOptions.RememberMeLoginDuration)
-                        };
-                    };
-
-                    // issue authentication cookie with subject ID and username
-                    var isuser = new IdentityServerUser(frUser.UserID.ToString())
-                    {
-                        DisplayName = frUser.UserName
-                    };
-                    
-                    await HttpContext.SignInAsync(isuser, props);
-                    
-                    if (context != null)
-                    {
-                        if (context.IsNativeClient())
-                        {
-                            // The client is native, so this change in how to
-                            // return the response is for better UX for the end user.
-                            return this.LoadingPage("Redirect", model.ReturnUrl);
-                        }
-
-                        // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                        return Redirect(model.ReturnUrl);
-                    }
-
-                    // request for a local page
-                    if (Url.IsLocalUrl(model.ReturnUrl))
-                    {
-                        return Redirect(model.ReturnUrl);
-                    }
-                    else if (string.IsNullOrEmpty(model.ReturnUrl))
-                    {
-                        return Redirect("~/");
-                    }
-                    else
-                    {
-                        // user might have clicked on a malicious link - should be logged
-                        throw new Exception("invalid return URL");
-                    }
+                    frUser = await _userService.GetFranchiseUserByLoginCredentials(new LoginCredential
+                        {Username = model.Username, Password = model.Password});
+                    if (frUser is null) throw new Exception($"Error getting user info for user {model.Username}");
                 }
-                
+                catch (Exception e)
+                {
+                    await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials",
+                        clientId: context?.Client.ClientId));
+                    ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
+                    var view = await BuildLoginViewModelAsync(model);
+                    return View(view);
+                }
 
-                await _events.RaiseAsync(new UserLoginFailureEvent(model.Username, "invalid credentials", clientId:context?.Client.ClientId));
-                ModelState.AddModelError(string.Empty, AccountOptions.InvalidCredentialsErrorMessage);
+                await _events.RaiseAsync(new UserLoginSuccessEvent(frUser.UserName, frUser.UserId.ToString(),
+                    $"{frUser.FirstName} {frUser.LastName}", clientId: context?.Client.ClientId));
+                // only set explicit expiration here if user chooses "remember me". 
+                // otherwise we rely upon expiration configured in cookie middleware.
+                AuthenticationProperties props = null;
+                if (AccountOptions.AllowRememberLogin && model.RememberLogin)
+                {
+                    props = new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.Add(AccountOptions.RememberMeLoginDuration)
+                    };
+                }
+
+                ;
+
+                // issue authentication cookie with subject ID and username
+                var isuser = new IdentityServerUser(frUser.UserId.ToString())
+                {
+                    DisplayName = frUser.UserName
+                };
+
+                await HttpContext.SignInAsync(isuser, props);
+
+                if (context != null)
+                {
+                    return context.IsNativeClient()
+                        ? this.LoadingPage("Redirect", model.ReturnUrl)
+                        : Redirect(model.ReturnUrl);
+
+                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
+                }
+
+                // request for a local page
+                if (Url.IsLocalUrl(model.ReturnUrl))
+                {
+                    return Redirect(model.ReturnUrl);
+                }
+
+                if (string.IsNullOrEmpty(model.ReturnUrl))
+                {
+                    return Redirect("~/");
+                }
+
+                // user might have clicked on a malicious link - should be logged
+                throw new Exception("invalid return URL");
             }
 
             // something went wrong, show form with error
@@ -182,7 +182,7 @@ namespace IdentityServerHost.Quickstart.UI
             return View(vm);
         }
 
-        
+
         /// <summary>
         /// Show logout page
         /// </summary>
@@ -227,10 +227,10 @@ namespace IdentityServerHost.Quickstart.UI
                 // build a return URL so the upstream provider will redirect back
                 // to us after the user has logged out. this allows us to then
                 // complete our single sign-out processing.
-                string url = Url.Action("Logout", new { logoutId = vm.LogoutId });
+                string url = Url.Action("Logout", new {logoutId = vm.LogoutId});
 
                 // this triggers a redirect to the external provider for sign-out
-                return SignOut(new AuthenticationProperties { RedirectUri = url }, vm.ExternalAuthenticationScheme);
+                return SignOut(new AuthenticationProperties {RedirectUri = url}, vm.ExternalAuthenticationScheme);
             }
 
             return View("LoggedOut", vm);
@@ -263,7 +263,7 @@ namespace IdentityServerHost.Quickstart.UI
 
                 if (!local)
                 {
-                    vm.ExternalProviders = new[] { new ExternalProvider { AuthenticationScheme = context.IdP } };
+                    vm.ExternalProviders = new[] {new ExternalProvider {AuthenticationScheme = context.IdP}};
                 }
 
                 return vm;
@@ -289,7 +289,8 @@ namespace IdentityServerHost.Quickstart.UI
 
                     if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Any())
                     {
-                        providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
+                        providers = providers.Where(provider =>
+                            client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
                     }
                 }
             }
@@ -314,7 +315,7 @@ namespace IdentityServerHost.Quickstart.UI
 
         private async Task<LogoutViewModel> BuildLogoutViewModelAsync(string logoutId)
         {
-            var vm = new LogoutViewModel { LogoutId = logoutId, ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt };
+            var vm = new LogoutViewModel {LogoutId = logoutId, ShowLogoutPrompt = AccountOptions.ShowLogoutPrompt};
 
             if (User?.Identity.IsAuthenticated != true)
             {
@@ -373,6 +374,7 @@ namespace IdentityServerHost.Quickstart.UI
 
             return vm;
         }
+
         private static string CreatePasswordHash(string password, byte[] salt)
         {
             return Convert.ToBase64String(
@@ -380,6 +382,4 @@ namespace IdentityServerHost.Quickstart.UI
                     password, salt, KeyDerivationPrf.HMACSHA512, 100000, 32));
         }
     }
-    
-    
 }

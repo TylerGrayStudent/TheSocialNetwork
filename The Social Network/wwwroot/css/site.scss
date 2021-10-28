@@ -40,3 +40,15 @@
 }
 
 
+.full-width{
+    width: 100%;
+}
+
+.center-items{
+    justify-content: center !important;
+}
+
+.cloud-background{
+background-image: url(../assets/clouds.svg);
+background-repeat: repeat-x;
+background-position: 50% 130%;}

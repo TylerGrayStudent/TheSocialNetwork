@@ -40,7 +40,7 @@ namespace The_Social_Network.Services
             }
             return new List<Claim>
             {
-                new("user_id", user.UserID.ToString() ?? ""),
+                new("user_id", user.UserId.ToString() ?? ""),
                 new(JwtClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
             };
         }

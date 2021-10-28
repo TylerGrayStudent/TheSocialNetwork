@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using IdentityModel;
 using IdentityServer4.Models;
@@ -11,7 +16,7 @@ using The_Social_Network.Models;
 
 namespace The_Social_Network.Services
 {
-    public class UserService : IUserService, IProfileService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
 
@@ -20,42 +25,33 @@ namespace The_Social_Network.Services
             _userRepository = userRepository;
         }
 
-        public async Task GetProfileDataAsync(ProfileDataRequestContext context)
+        public async Task<FranchiseUser> GetFranchiseUserByLoginCredentials(LoginCredential credential)
         {
             try
             {
-                //depending on the scope accessing the user data.
-                if (!string.IsNullOrEmpty(context.Subject.Identity.Name))
-                {
-                    //get user from db (in my case this is by email)
-                    var user = await _userRepository.GetFranchiseUserByUserName(context.Subject.Identity.Name);
-
-                    if (user != null)
-                    {
-                        var claims = GetUserClaims(user);
-
-                        //set issued claims to return
-                        context.IssuedClaims = claims.Where(x => context.RequestedClaimTypes.Contains(x.Type)).ToList();
-                    }
-                }
+                using var http = new HttpClient();
+                var url = "https://testservices.hirequest.com/api/users/login/portal";
+                var url2 = "http://localhost:5000/users/login/portal/idp";
+                var content = new StringContent(JsonSerializer.Serialize(credential), Encoding.UTF8, "application/json");
+                using var response = await http.PostAsync(url2, content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+                var user = Newtonsoft.Json.JsonConvert.DeserializeObject<FranchiseUser>(responseContent);
+                return user;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
+
         }
 
-        public Task IsActiveAsync(IsActiveContext context)
-        {
-            return Task.FromResult(true);
-        }
         
         private static IEnumerable<Claim> GetUserClaims(FranchiseUser user)
         {
             return new List<Claim>
             {
-                new("user_id", user.UserID.ToString() ?? ""),
+                new("user_id", user.UserId.ToString() ?? ""),
                 new(JwtClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
             };
         }

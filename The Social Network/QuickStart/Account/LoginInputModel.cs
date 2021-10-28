@@ -14,5 +14,14 @@ namespace IdentityServerHost.Quickstart.UI
         public string Password { get; set; }
         public bool RememberLogin { get; set; }
         public string ReturnUrl { get; set; }
+       
+        public LoginType? Type { get; set; }
+    }
+
+    public enum LoginType
+    {
+        Client,
+        Franchise,
+        Employee
     }
 }
