@@ -27,32 +27,37 @@ namespace The_Social_Network.Services
 
         public async Task<FranchiseUser> GetFranchiseUserByLoginCredentials(LoginCredential credential)
         {
-            try
-            {
-                using var http = new HttpClient();
-                var url = $"{Environment.GetEnvironmentVariable("WEB_SERVICES_LOCATION")}/users/login/portal/idp";
-                var content = new StringContent(JsonSerializer.Serialize(credential), Encoding.UTF8, "application/json");
-                using var response = await http.PostAsync(url, content);
-                var responseContent = await response.Content.ReadAsStringAsync();
-                var user = Newtonsoft.Json.JsonConvert.DeserializeObject<FranchiseUser>(responseContent);
-                return user;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
+            using var http = new HttpClient();
+            var url = $"{Environment.GetEnvironmentVariable("WEB_SERVICES_LOCATION")}/users/login/portal/idp";
+            var content = new StringContent(JsonSerializer.Serialize(credential), Encoding.UTF8, "application/json");
+            using var response = await http.PostAsync(url, content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var user = Newtonsoft.Json.JsonConvert.DeserializeObject<FranchiseUser>(responseContent);
+            return user;
+        }
+        
+        public async Task<ClientUser> GetClientUserByLoginCredentials(LoginCredential credential)
+        {
+            using var http = new HttpClient();
+            var url = $"{Environment.GetEnvironmentVariable("WEB_SERVICES_LOCATION")}/users/login/client/idp";
+            var content = new StringContent(JsonSerializer.Serialize(credential), Encoding.UTF8, "application/json");
+            using var response = await http.PostAsync(url, content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var user = Newtonsoft.Json.JsonConvert.DeserializeObject<ClientUser>(responseContent);
+            return user;
         }
 
         
-        private static IEnumerable<Claim> GetUserClaims(FranchiseUser user)
+        public async Task<EmployeeUser> GetEmployeeUserByLoginCredentials(LoginCredential credential)
         {
-            return new List<Claim>
-            {
-                new("user_id", user.UserId.ToString() ?? ""),
-                new(JwtClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
-            };
+            using var http = new HttpClient();
+            var url = $"{Environment.GetEnvironmentVariable("WEB_SERVICES_LOCATION")}/users/login/employee/idp";
+            var content = new StringContent(JsonSerializer.Serialize(credential), Encoding.UTF8, "application/json");
+            using var response = await http.PostAsync(url, content);
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var user = Newtonsoft.Json.JsonConvert.DeserializeObject<EmployeeUser>(responseContent);
+            return user;
         }
+
     }
 }

@@ -113,12 +113,50 @@ namespace IdentityServerHost.Quickstart.UI
             if (ModelState.IsValid)
             {
                 // validate username/password against in-memory store
-                FranchiseUser frUser;
+                var userId = string.Empty;
+                var firstName = string.Empty;;
+                var lastName = string.Empty;;
+                var userName = string.Empty;
                 try
                 {
-                    frUser = await _userService.GetFranchiseUserByLoginCredentials(new LoginCredential
-                        {Username = model.Username, Password = model.Password});
-                    if (frUser is null) throw new Exception($"Error getting user info for user {model.Username}");
+                    var loginType = Environment.GetEnvironmentVariable("LOGIN_TYPE");
+                    
+                    switch (loginType)
+                    {
+                        case "CLIENT":
+                        {
+                            var clUser = await _userService.GetClientUserByLoginCredentials(new LoginCredential
+                                {Username = model.Username, Password = model.Password});
+                            if (clUser is null) throw new Exception($"Error getting user info for user {model.Username}");
+                            userId = clUser.LegacyId.ToString();
+                            userName = clUser.Email;
+                            firstName = clUser.FirstName;
+                            lastName = clUser.LastName;
+                            break;
+                        }
+                        case "FRANCHISE":
+                        {
+                            var frUser = await _userService.GetFranchiseUserByLoginCredentials(new LoginCredential
+                                {Username = model.Username, Password = model.Password});
+                            if (frUser is null) throw new Exception($"Error getting user info for user {model.Username}");
+                            userId = frUser.UserId.ToString();
+                            userName = frUser.UserName;
+                            lastName = frUser.LastName;
+                            firstName = frUser.FirstName;
+                            break;
+                        }
+                        case "EMPLOYEE":
+                        {
+                            var empUser = await _userService.GetEmployeeUserByLoginCredentials(new LoginCredential
+                                {Username = model.Username, Password = model.Password});
+                            if (empUser is null) throw new Exception($"Error getting user info for user {model.Username}");
+                            userId = empUser.Id.ToString();
+                            firstName = empUser.FirstName;
+                            lastName = empUser.LastName;
+                            userName = $"{firstName} {lastName}";
+                            break;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -129,8 +167,8 @@ namespace IdentityServerHost.Quickstart.UI
                     return View(view);
                 }
 
-                await _events.RaiseAsync(new UserLoginSuccessEvent(frUser.UserName, frUser.UserId.ToString(),
-                    $"{frUser.FirstName} {frUser.LastName}", clientId: context?.Client.ClientId));
+                await _events.RaiseAsync(new UserLoginSuccessEvent(userName, userId,
+                    $"{firstName} {lastName}", clientId: context?.Client.ClientId));
                 // only set explicit expiration here if user chooses "remember me". 
                 // otherwise we rely upon expiration configured in cookie middleware.
                 AuthenticationProperties props = null;
@@ -146,9 +184,9 @@ namespace IdentityServerHost.Quickstart.UI
                 ;
 
                 // issue authentication cookie with subject ID and username
-                var isuser = new IdentityServerUser(frUser.UserId.ToString())
+                var isuser = new IdentityServerUser(userId)
                 {
-                    DisplayName = frUser.UserName
+                    DisplayName = userName
                 };
 
                 await HttpContext.SignInAsync(isuser, props);
