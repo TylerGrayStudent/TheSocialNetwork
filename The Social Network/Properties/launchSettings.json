@@ -13,7 +13,8 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "LOGIN_TYPE" : "CLIENT"
+        "LOGIN_TYPE" : "EMPLOYEE",
+        "WEB_SERVICES_LOCATION": "https://testservices.hirequest.com/api"
      }
     },
     "The_Social_Network": {
@@ -22,7 +23,8 @@
       "launchBrowser": true,
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "WEB_SERVICES_LOCATION": "https://testservices.hirequest.com/api"
       }
     }
   }

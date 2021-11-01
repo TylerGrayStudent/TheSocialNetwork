@@ -31,6 +31,7 @@ namespace The_Social_Network.Services
             var url = $"{Environment.GetEnvironmentVariable("WEB_SERVICES_LOCATION")}/users/login/portal/idp";
             var content = new StringContent(JsonSerializer.Serialize(credential), Encoding.UTF8, "application/json");
             using var response = await http.PostAsync(url, content);
+            if (!response.IsSuccessStatusCode) return null;
             var responseContent = await response.Content.ReadAsStringAsync();
             var user = Newtonsoft.Json.JsonConvert.DeserializeObject<FranchiseUser>(responseContent);
             return user;
@@ -42,6 +43,7 @@ namespace The_Social_Network.Services
             var url = $"{Environment.GetEnvironmentVariable("WEB_SERVICES_LOCATION")}/users/login/client/idp";
             var content = new StringContent(JsonSerializer.Serialize(credential), Encoding.UTF8, "application/json");
             using var response = await http.PostAsync(url, content);
+            if (!response.IsSuccessStatusCode) return null;
             var responseContent = await response.Content.ReadAsStringAsync();
             var user = Newtonsoft.Json.JsonConvert.DeserializeObject<ClientUser>(responseContent);
             return user;
@@ -54,6 +56,7 @@ namespace The_Social_Network.Services
             var url = $"{Environment.GetEnvironmentVariable("WEB_SERVICES_LOCATION")}/users/login/employee/idp";
             var content = new StringContent(JsonSerializer.Serialize(credential), Encoding.UTF8, "application/json");
             using var response = await http.PostAsync(url, content);
+            if (!response.IsSuccessStatusCode) return null;
             var responseContent = await response.Content.ReadAsStringAsync();
             var user = Newtonsoft.Json.JsonConvert.DeserializeObject<EmployeeUser>(responseContent);
             return user;
