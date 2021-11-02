@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-11-02T19:51:52.279Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36" etag="vHLzfGWcHgBTSNDeyJcJ" version="15.6.6" type="github">
+<mxfile host="app.diagrams.net" modified="2021-11-02T19:54:31.433Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36" etag="hxHaIiQaP8gisEDCWGsQ" version="15.6.6" type="github">
   <diagram id="qRd6eIhB8OMw0SJ-CpMm" name="Page-1">
     <mxGraphModel dx="1220" dy="2244" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -52,7 +52,7 @@
         <mxCell id="PNWq4bw_2nv1dbnlcLtl-21" value="3.2. Web Services Looks into Trojan for users" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="50" y="140" width="60" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="PNWq4bw_2nv1dbnlcLtl-22" value="4&lt;br&gt;4. IDP Registers / Looks up user in Azure B2C" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="PNWq4bw_2nv1dbnlcLtl-22" value="&lt;br&gt;5. IDP Registers / Looks up user in Azure B2C" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="470" y="150" width="150" height="30" as="geometry" />
         </mxCell>
         <mxCell id="PNWq4bw_2nv1dbnlcLtl-24" value="" style="group" parent="1" vertex="1" connectable="0">
@@ -97,8 +97,8 @@
         <mxCell id="PNWq4bw_2nv1dbnlcLtl-29" value="7.AuthN token sent in." style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="980" y="155" width="60" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="Q0eX8DomgLe0p6BozYp--1" value="On login, AuthNs with Web Services. Then calls to Portal API to ensure user exists.&lt;br&gt;All Types of Users will have Users. When get AuthZ token, get user, look at LegacyUserIdentefier for Identity Info, and returns what is needed." style="rounded=0;whiteSpace=wrap;html=1;fillColor=default;strokeColor=default;fontColor=default;" vertex="1" parent="1">
-          <mxGeometry x="310" y="360" width="485" height="140" as="geometry" />
+        <mxCell id="Q0eX8DomgLe0p6BozYp--1" value="Portal user clicks login. They are directed to the user flow inside Azure B2C (tenant based). The Userflow directs the user to our IDP server to authenticate against web services for users stored in trojan db. IDP will ensure a user is created in portal api by calling to portal api. All uesrs will now have a User model in azure db. IDP returns an authN token to B2C. B2C then returns an AuthN token to our front end. That token is then used to get our AuthZ token from portal.&amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=default;strokeColor=default;fontColor=default;" vertex="1" parent="1">
+          <mxGeometry x="200" y="460" width="485" height="370" as="geometry" />
         </mxCell>
         <mxCell id="Q0eX8DomgLe0p6BozYp--4" value="" style="endArrow=classic;html=1;rounded=0;labelBackgroundColor=default;fontColor=default;strokeColor=default;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="PNWq4bw_2nv1dbnlcLtl-11" target="PNWq4bw_2nv1dbnlcLtl-14">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -106,7 +106,7 @@
             <mxPoint x="830" y="220" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="Q0eX8DomgLe0p6BozYp--5" value="5. Create User if Needed" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=default;" vertex="1" parent="1">
+        <mxCell id="Q0eX8DomgLe0p6BozYp--5" value="4. Create User if Needed" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=default;" vertex="1" parent="1">
           <mxGeometry x="780" y="300" width="110" height="30" as="geometry" />
         </mxCell>
       </root>
